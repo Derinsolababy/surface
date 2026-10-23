@@ -1,16 +1,25 @@
 import { cn } from '@/utils/helpers';
 
-/** The StellarPOS mark: a receipt slip with a four-point star. */
+/**
+ * The StellarPOS "Scan Star": a four-point star inside QR-scanner brackets.
+ * Brackets use currentColor so the mark follows the theme; the star keeps
+ * Stellar indigo.
+ */
 export default function BrandMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={cn('h-8 w-8', className)} aria-hidden>
-      <rect width="32" height="32" rx="7" className="fill-ink" />
+    <svg viewBox="0 0 512 512" className={cn('h-8 w-8 text-ink', className)} aria-hidden>
       <path
-        d="M9 7h14v18l-2.33-1.5L18.33 25 16 23.5 13.67 25l-2.34-1.5L9 25z"
-        className="fill-paper"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="44"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M76 172V116a40 40 0 0 1 40-40h56M340 76h56a40 40 0 0 1 40 40v56M436 340v56a40 40 0 0 1-40 40h-56M172 436h-56a40 40 0 0 1-40-40v-56"
       />
-      <path d="M16 10.5l1.1 2.4 2.4 1.1-2.4 1.1-1.1 2.4-1.1-2.4-2.4-1.1 2.4-1.1z" fill="#3B3FB6" />
-      <path d="M12 20h8" className="stroke-ink" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        className="fill-lumen [:root[data-theme='dark']_&]:fill-[#6E72F0]"
+        d="M256 128C266 214 298 246 384 256C298 266 266 298 256 384C246 298 214 266 128 256C214 246 246 214 256 128Z"
+      />
     </svg>
   );
 }
