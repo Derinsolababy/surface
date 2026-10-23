@@ -42,7 +42,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
       <aside className="relative hidden overflow-hidden bg-ink px-12 py-10 text-paper lg:flex lg:flex-col">
         <div className="flex items-center gap-3">
-          <BrandMark className="[&_path:first-of-type]:fill-ink [&_rect]:fill-paper" />
+          <BrandMark className="text-paper [&_path:last-child]:fill-[#6E72F0]" />
           <span className="font-display text-lg font-bold">StellarPOS</span>
         </div>
         <div className="mt-16 max-w-md">
