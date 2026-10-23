@@ -1,43 +1,36 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuthStore } from '@/stores/authStore'
-
-// Layouts
-import DashboardLayout from '@/components/layout/DashboardLayout'
-import AuthLayout from '@/components/layout/AuthLayout'
-
-// Pages
-import Dashboard from '@/pages/dashboard/Dashboard'
-import POSTerminal from '@/pages/pos/POSTerminal'
-import Inventory from '@/pages/inventory/Inventory'
-import Transactions from '@/pages/transactions/Transactions'
-import Customers from '@/pages/customers/Customers'
-import Settings from '@/pages/settings/Settings'
-import Login from '@/pages/auth/Login'
-import Register from '@/pages/auth/Register'
-
-// Components
-import ProtectedRoute from '@/components/ProtectedRoute'
-import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import AuthLayout from '@/components/layout/AuthLayout';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Login from '@/pages/auth/Login';
+import Register from '@/pages/auth/Register';
+import Customers from '@/pages/customers/Customers';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import Inventory from '@/pages/inventory/Inventory';
+import POSTerminal from '@/pages/pos/POSTerminal';
+import Settings from '@/pages/settings/Settings';
+import Transactions from '@/pages/transactions/Transactions';
+import { useAuthStore } from '@/stores/authStore';
 
 function App() {
-  const { isAuthenticated, isLoading } = useAuthStore()
+  const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
-    )
+    );
   }
 
   return (
     <Routes>
-      {/* Public Routes */}
       <Route
         path="/auth/*"
         element={
           isAuthenticated ? (
-            <Navigate to="/dashboard" replace />
+            <Navigate to="/pos" replace />
           ) : (
             <AuthLayout>
               <Routes>
@@ -50,41 +43,26 @@ function App() {
         }
       />
 
-      {/* Protected Routes */}
       <Route
         path="/*"
         element={
           <ProtectedRoute>
             <DashboardLayout>
               <Routes>
-                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="pos" element={<POSTerminal />} />
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="inventory" element={<Inventory />} />
                 <Route path="transactions" element={<Transactions />} />
                 <Route path="customers" element={<Customers />} />
                 <Route path="settings" element={<Settings />} />
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                <Route path="*" element={<Navigate to="/pos" replace />} />
               </Routes>
             </DashboardLayout>
           </ProtectedRoute>
         }
       />
     </Routes>
-  )
+  );
 }
 
-export default App// Update 5
-// Update 10
-// Update 15
-// Update 20
-// Update 25
-// Update 30
-// Update 35
-// Update 40
-// Update 45
-// Update 50
-// Update 55
-// Update 60
-// Update 65
-// Update 70
+export default App;
