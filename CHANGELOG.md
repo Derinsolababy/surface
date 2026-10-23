@@ -19,9 +19,9 @@ The first version that builds and runs.
 - Stock management with inline adjustments and low-stock alerts.
 - Customers with visit and spend history.
 - Reports: Z report, revenue by day, busy-hours strip, best sellers.
-- Settings: profile and password, night-shift theme (persisted), Stellar
+- Settings: profile and password, night-shift theme (follows the OS until chosen, then persisted), Stellar
   wallet balances, staff and roles.
-- Build tooling (tsconfig, PostCSS, Tailwind plugins), 33 tests, CI, Docker
+- Build tooling (tsconfig, PostCSS, Tailwind plugins), 35 tests, CI, Docker
   image with nginx, and Dependabot.
 
 ### Removed

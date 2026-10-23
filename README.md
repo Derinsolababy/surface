@@ -105,7 +105,7 @@ assets, and proxies `/api` and `/socket.io` (with WebSocket upgrade) to
 |---|---|
 | `npm run dev` | Vite dev server with API proxy |
 | `npm run build` | Type-check and build to `dist/` |
-| `npm test` | Vitest + Testing Library (33 tests) |
+| `npm test` | Vitest + Testing Library (35 tests) |
 | `npm run check` | Lint, type-check, test: what CI runs |
 
 ## How it is built
