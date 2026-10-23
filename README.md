@@ -99,6 +99,30 @@ nginx serves the build with SPA routing and long-lived caching for hashed
 assets, and proxies `/api` and `/socket.io` (with WebSocket upgrade) to
 `API_UPSTREAM`.
 
+### Netlify
+
+The repository includes a [`netlify.toml`](netlify.toml), so connecting
+**this repository** (`StellarPOS-App/surface`, branch `main`) needs no build
+settings in the dashboard. Netlify builds with Node 22, publishes `dist/`, and
+serves the app for every route.
+
+The API cannot run on Netlify (it is a long-running server with
+WebSockets). Host the [backend](https://github.com/StellarPOS-App/backend)
+elsewhere, then in Netlify go to *Site configuration > Environment
+variables* and set:
+
+| Variable | Value |
+|---|---|
+| `VITE_API_BASE_URL` | `https://<your-api-host>/api/v1` |
+| `VITE_SOCKET_URL` | `https://<your-api-host>` |
+
+Finally, set `CLIENT_URL` on the backend to your Netlify URL so its CORS
+settings allow the app.
+
+If a build fails with TypeScript printing its full option list, Netlify is
+building an outdated fork that predates the TypeScript config. Point the
+site at this repository, or sync the fork.
+
 ## Scripts
 
 | Command | What it does |
