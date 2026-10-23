@@ -1,14 +1,111 @@
-/* Style update 3 */
-/* Style update 8 */
-/* Style update 13 */
-/* Style update 18 */
-/* Style update 23 */
-/* Style update 28 */
-/* Style update 33 */
-/* Style update 38 */
-/* Style update 43 */
-/* Style update 48 */
-/* Style update 53 */
-/* Style update 58 */
-/* Style update 63 */
-/* Style update 68 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme tokens as RGB triplets so Tailwind opacity modifiers work. */
+@layer base {
+  :root {
+    --paper: 245 240 230;
+    --paper-2: 235 228 214;
+    --paper-3: 222 213 196;
+    --card: 255 253 248;
+    --ink: 29 27 22;
+    --ink-2: 74 69 59;
+    --ink-3: 125 117 103;
+    --line: 214 205 188;
+    color-scheme: light;
+  }
+
+  /* "Night shift": warm charcoal instead of paper, for late trading hours. */
+  :root[data-theme='dark'] {
+    --paper: 27 25 22;
+    --paper-2: 36 33 29;
+    --paper-3: 48 44 38;
+    --card: 33 31 27;
+    --ink: 240 234 222;
+    --ink-2: 204 196 182;
+    --ink-3: 150 142 128;
+    --line: 62 57 50;
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-full;
+  }
+
+  body {
+    /* A faint paper grain so large surfaces do not look flat. */
+    background-image: radial-gradient(rgb(var(--ink) / 0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-lumen ring-offset-2 ring-offset-paper;
+  }
+
+  ::selection {
+    @apply bg-lumen-soft text-lumen-ink;
+  }
+}
+
+@layer components {
+  /* Tabular figures everywhere money appears. */
+  .figures {
+    @apply font-mono tabular-nums tracking-tight;
+  }
+
+  /* A torn receipt edge, drawn with two gradients. */
+  .receipt-edge {
+    position: relative;
+  }
+  .receipt-edge::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    height: 10px;
+    background:
+      linear-gradient(-45deg, transparent 6px, rgb(var(--card)) 0) 0 0 / 12px 10px repeat-x,
+      linear-gradient(45deg, transparent 6px, rgb(var(--card)) 0) 0 0 / 12px 10px repeat-x;
+    filter: drop-shadow(0 2px 1px rgb(0 0 0 / 0.06));
+  }
+
+  .rule-dashed {
+    @apply border-t border-dashed border-ink-line;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-ink-3;
+  }
+
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--paper-3)) transparent;
+  }
+}
+
+/* Receipts print on their own, sized for 80mm thermal paper. */
+@media print {
+  body {
+    background: white;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .printable,
+  .printable * {
+    visibility: visible;
+  }
+  .printable {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 80mm;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
