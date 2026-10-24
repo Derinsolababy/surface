@@ -13,6 +13,26 @@ Run the [backend](https://github.com/StellarPOS-App/backend) alongside
 (`npm run db:seed && npm run dev`). Vite proxies the API, so no configuration
 is needed.
 
+## Already have a fork?
+
+Every fork of this repository is listed in [CONTRIBUTORS.md](CONTRIBUTORS.md#forks).
+Most were created before the current code landed and are many commits behind
+`main`. Sync yours before you start, or you will be working on code that no
+longer exists:
+
+```bash
+# GitHub CLI
+gh repo sync <you>/<your-fork> --source StellarPOS-App/surface --branch main
+
+# or plain git, from your clone
+git remote add upstream https://github.com/StellarPOS-App/surface.git
+git fetch upstream
+git checkout main && git merge --ff-only upstream/main && git push
+```
+
+You can also click **Sync fork** on your fork's GitHub page. Once your first
+pull request is merged, you move from the Forks list to the contributors table.
+
 ## Workflow
 
 1. Open or claim an issue for anything beyond a typo.
