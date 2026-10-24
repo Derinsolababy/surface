@@ -30,7 +30,6 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             react: ['react', 'react-dom', 'react-router-dom'],
             data: ['@tanstack/react-query', 'zustand', 'socket.io-client'],
-            charts: ['recharts'],
           },
         },
       },
