@@ -1,5 +1,5 @@
 import { LogOut, Moon, Sun } from 'lucide-react';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useStoreSettings } from '@/hooks/queries';
 import { useAuth } from '@/hooks/useAuth';
@@ -51,13 +51,18 @@ function Clock() {
  * the till.
  */
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { user, logout, can } = useAuth();
+  const { user, logout, can, role } = useAuth();
   const store = useStoreSettings().data;
   const connection = useRealtime();
   const { theme, toggle } = useThemeStore();
   const cartCount = useCartStore((s) => s.lines.reduce((n, l) => n + l.quantity, 0));
   const navigate = useNavigate();
-  const modes = MODES.filter((m) => !m.minRole || can(m.minRole));
+  // Stable across renders so the shortcut listener below is attached once.
+  const modes = useMemo(
+    () => MODES.filter((m) => !m.minRole || can(m.minRole)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [role],
+  );
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

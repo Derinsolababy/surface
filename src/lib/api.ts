@@ -34,7 +34,7 @@ function buildUrl(path: string, query?: Query): string {
 export async function request<T>(
   method: string,
   path: string,
-  opts: { body?: unknown; query?: Query; raw?: boolean } = {},
+  opts: { body?: unknown; query?: Query; raw?: boolean; signal?: AbortSignal } = {},
 ): Promise<T> {
   const token = useAuthStore.getState().token;
   let res: Response;
@@ -46,8 +46,10 @@ export async function request<T>(
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+      signal: opts.signal,
     });
-  } catch {
+  } catch (err) {
+    if ((err as Error).name === 'AbortError') throw err;
     throw new ApiError('Cannot reach the StellarPOS server. Check your connection.', 0);
   }
 
@@ -67,7 +69,8 @@ export async function request<T>(
 
 export const api = {
   get: <T>(path: string, query?: Query) => request<T>('GET', path, { query }),
-  getPage: <T>(path: string, query?: Query) => request<T>('GET', path, { query, raw: true }),
+  getPage: <T>(path: string, query?: Query, signal?: AbortSignal) =>
+    request<T>('GET', path, { query, raw: true, signal }),
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, { body: body ?? {} }),
   put: <T>(path: string, body: unknown) => request<T>('PUT', path, { body }),
   patch: <T>(path: string, body: unknown) => request<T>('PATCH', path, { body }),

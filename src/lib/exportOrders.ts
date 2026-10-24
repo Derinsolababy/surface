@@ -17,11 +17,11 @@ export async function fetchAllOrders(
   const all: Transaction[] = [];
   for (let page = 1; ; page++) {
     if (signal?.aborted) throw new DOMException('Export cancelled', 'AbortError');
-    const res = await api.getPage<Paginated<Transaction>>('/transactions', {
-      ...filter,
-      page,
-      limit: PAGE,
-    });
+    const res = await api.getPage<Paginated<Transaction>>(
+      '/transactions',
+      { ...filter, page, limit: PAGE },
+      signal,
+    );
     all.push(...res.data);
     onProgress?.(all.length, res.pagination.total);
     if (page >= res.pagination.pages || res.data.length === 0) return all;

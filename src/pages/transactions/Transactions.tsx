@@ -1,5 +1,5 @@
 import { Download, Printer, RotateCcw, Search, XCircle } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import ReceiptView from '@/components/pos/ReceiptView';
 import { MethodBadge, StatusBadge } from '@/components/ui/Badge';
@@ -180,6 +180,10 @@ export default function Transactions() {
   const [exporting, setExporting] = useState<{ done: number; total: number } | null>(null);
   const abort = useRef<AbortController | null>(null);
 
+  // Leaving Orders mid-export cancels it: no background paging, no rows held
+  // in memory, and no download popping up on another screen.
+  useEffect(() => () => abort.current?.abort(), []);
+
   const exportCsv = async () => {
     abort.current = new AbortController();
     setExporting({ done: 0, total: 0 });
@@ -190,6 +194,7 @@ export default function Transactions() {
         (done, total) => setExporting({ done, total }),
         abort.current.signal,
       );
+      if (abort.current.signal.aborted) return;
       downloadFile(
         `stellarpos-orders-${new Date().toISOString().slice(0, 10)}.csv`,
         ordersToCsv(orders),
@@ -198,7 +203,7 @@ export default function Transactions() {
     } catch (err) {
       if ((err as Error).name !== 'AbortError') toast.error((err as Error).message);
     } finally {
-      setExporting(null);
+      if (!abort.current?.signal.aborted) setExporting(null);
     }
   };
   const { data, isLoading } = useTransactions(query);
