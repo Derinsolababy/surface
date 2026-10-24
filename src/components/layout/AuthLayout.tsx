@@ -39,7 +39,7 @@ function SampleReceipt() {
 export default function AuthLayout({ children }: { children: ReactNode }) {
   const store = useStoreSettings().data;
   return (
-    <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
+    <div className="min-h-app grid lg:grid-cols-[1.1fr_1fr]">
       <aside className="relative hidden overflow-hidden bg-ink px-12 py-10 text-paper lg:flex lg:flex-col">
         <div className="flex items-center gap-3">
           <BrandMark className="text-paper [&_path:last-child]:fill-[#6E72F0]" />

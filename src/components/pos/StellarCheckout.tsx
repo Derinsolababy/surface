@@ -11,6 +11,7 @@ import {
 import { useCountdown } from '@/hooks/useCountdown';
 import { onRealtime } from '@/hooks/useRealtime';
 import type { PaymentRequest, Transaction } from '@/types';
+import { copyText } from '@/lib/clipboard';
 import { cn, formatAssetAmount, truncateMiddle } from '@/utils/helpers';
 import Button from '../ui/Button';
 import { Input } from '../ui/Field';
@@ -156,10 +157,10 @@ export default function StellarCheckout({
             size="sm"
             variant="secondary"
             icon={<Copy className="h-3.5 w-3.5" />}
-            onClick={() =>
-              navigator.clipboard
-                .writeText(request.uri)
-                .then(() => toast.success('Payment link copied'))
+            onClick={async () =>
+              (await copyText(request.uri))
+                ? toast.success('Payment link copied')
+                : toast.error('Could not copy. Long-press the QR link instead.')
             }
           >
             Copy link

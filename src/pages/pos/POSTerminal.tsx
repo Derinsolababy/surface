@@ -50,7 +50,7 @@ export default function POSTerminal() {
   };
 
   return (
-    <div className="mx-auto grid max-w-[1500px] gap-6 lg:h-[calc(100vh-8.5rem)] lg:grid-cols-[1fr_400px]">
+    <div className="mx-auto grid max-w-[1500px] gap-6 lg:h-[calc(100vh-8.5rem)] lg:grid-cols-[1fr_400px] supports-[height:100dvh]:lg:h-[calc(100dvh-8.5rem)]">
       <section className="flex min-h-0 min-w-0 flex-col" aria-label="Products">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           <label className="relative flex-1">
