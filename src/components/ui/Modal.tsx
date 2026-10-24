@@ -34,6 +34,12 @@ export default function Modal({
   const panel = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
 
+  // Callers usually pass a new onClose each render; read it through a ref so
+  // the effect below runs once per opening instead of on every render (which
+  // re-registered listeners and pulled focus back to the first field).
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
     if (!open) return;
     previous.current = document.activeElement;
@@ -42,7 +48,7 @@ export default function Modal({
     );
     (focusable ?? panel.current)?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !locked) onClose();
+      if (e.key === 'Escape' && !locked) onCloseRef.current();
     };
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
@@ -51,7 +57,7 @@ export default function Modal({
       document.body.style.overflow = '';
       (previous.current as HTMLElement | null)?.focus?.();
     };
-  }, [open, locked, onClose]);
+  }, [open, locked]);
 
   if (!open) return null;
 
