@@ -5,6 +5,7 @@ import CheckoutModal from '@/components/pos/CheckoutModal';
 import ProductTag from '@/components/pos/ProductTag';
 import { categoryColor } from '@/lib/pos';
 import { searchProducts } from '@/lib/search';
+import MobileOrderBar from '@/components/pos/MobileOrderBar';
 import ReceiptCart from '@/components/pos/ReceiptCart';
 import EmptyState from '@/components/ui/EmptyState';
 import Kbd from '@/components/ui/Kbd';
@@ -100,7 +101,7 @@ export default function POSTerminal() {
           ))}
         </div>
 
-        <div className="scroll-thin min-h-0 flex-1 overflow-y-auto pb-6">
+        <div className="scroll-thin min-h-0 flex-1 overflow-y-auto pb-28 lg:pb-6">
           {isLoading && !catalog && (
             <div className="grid place-items-center py-24">
               <LoadingSpinner size="lg" />
@@ -143,9 +144,10 @@ export default function POSTerminal() {
         </div>
       </section>
 
-      <div className="min-h-[560px] lg:min-h-0">
+      <div className="hidden lg:block lg:min-h-0">
         <ReceiptCart onCharge={setCheckout} />
       </div>
+      <MobileOrderBar onCharge={setCheckout} />
 
       <CheckoutModal
         open={checkout !== null}
