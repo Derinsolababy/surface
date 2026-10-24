@@ -8,6 +8,13 @@ and GitHub activity, so it lists real accounts only.
 | [@abayomiwav](https://github.com/abayomiwav) | Organization owner; project setup and the implementation issue backlog (#15 to #33) |
 | [@presidojay1](https://github.com/presidojay1) | Documentation updates |
 | [@circleboyslimited](https://github.com/circleboyslimited) | App implementation, design system, Stellar checkout UI, tests, CI, and docs |
+| [@miraclesonly](https://github.com/miraclesonly) | Lazy-loaded screens (43% less JavaScript on first visit) (#50) |
+| [@oluwarantimini](https://github.com/oluwarantimini) | Idle session timeout with warning (#51) |
+| [@onejasonn](https://github.com/onejasonn) | Paged CSV export of sales (#52) |
+| [@posimideveloper](https://github.com/posimideveloper) | Customizable receipts (#53) |
+| [@praizehimm](https://github.com/praizehimm) | Instant, forgiving product search (#54) |
+| [@presidoclintonbased-alt](https://github.com/presidoclintonbased-alt) | Mobile order bar and bottom sheet (#55) |
+| [@abayomicornelius](https://github.com/abayomicornelius) | Safari fixes (viewport height, input zoom, clipboard) (#56) |
 
 ## Forks
 
