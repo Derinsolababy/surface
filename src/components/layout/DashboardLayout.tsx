@@ -10,6 +10,7 @@ import type { Role } from '@/types';
 import { cn, initials } from '@/utils/helpers';
 import Kbd from '../ui/Kbd';
 import BrandMark from './BrandMark';
+import SessionTimeout from './SessionTimeout';
 
 // Warm a screen's code when the pointer reaches its tab, so the click feels instant.
 const PREFETCH: Record<string, () => Promise<unknown>> = {
@@ -173,6 +174,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </header>
 
       <main className="flex-1 px-4 py-6 sm:px-6">{children}</main>
+      <SessionTimeout />
     </div>
   );
 }
