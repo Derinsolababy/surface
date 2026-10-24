@@ -86,7 +86,7 @@ export default function ReceiptCart({ onCharge }: { onCharge: (method: PaymentMe
           >
             <div className="flex items-center rounded-md border border-ink-line">
               <button
-                className="p-1.5 hover:bg-paper-2"
+                className="p-2.5 hover:bg-paper-2 lg:p-1.5"
                 onClick={() => setQuantity(product.id, quantity - 1)}
                 aria-label={`One less ${product.name}`}
               >
@@ -96,7 +96,7 @@ export default function ReceiptCart({ onCharge }: { onCharge: (method: PaymentMe
                 {quantity}
               </span>
               <button
-                className="p-1.5 hover:bg-paper-2 disabled:opacity-30"
+                className="p-2.5 hover:bg-paper-2 disabled:opacity-30 lg:p-1.5"
                 onClick={() => setQuantity(product.id, quantity + 1)}
                 disabled={quantity >= product.stock}
                 aria-label={`One more ${product.name}`}
@@ -108,7 +108,7 @@ export default function ReceiptCart({ onCharge }: { onCharge: (method: PaymentMe
             <Money cents={product.priceCents * quantity} />
             <button
               onClick={() => remove(product.id)}
-              className="text-ink-3 opacity-0 transition-opacity hover:text-signal focus:opacity-100 group-hover:opacity-100"
+              className="text-ink-3 transition-opacity hover:text-signal focus:opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
               aria-label={`Remove ${product.name}`}
             >
               <X className="h-4 w-4" />
