@@ -4,12 +4,13 @@ import { toast } from 'sonner';
 import CheckoutModal from '@/components/pos/CheckoutModal';
 import ProductTag from '@/components/pos/ProductTag';
 import { categoryColor } from '@/lib/pos';
+import { searchProducts } from '@/lib/search';
 import ReceiptCart from '@/components/pos/ReceiptCart';
 import EmptyState from '@/components/ui/EmptyState';
 import Kbd from '@/components/ui/Kbd';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { useCategories, useProducts } from '@/hooks/queries';
-import { useDebounce } from '@/hooks/useDebounce';
+import Button from '@/components/ui/Button';
+import { useCatalog, useCategories } from '@/hooks/queries';
 import { useHotkey } from '@/hooks/useHotkey';
 import { useCartStore } from '@/stores/cartStore';
 import type { PaymentMethod } from '@/types';
@@ -20,16 +21,21 @@ export default function POSTerminal() {
   const [category, setCategory] = useState<string | null>(null);
   const [checkout, setCheckout] = useState<PaymentMethod | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const debounced = useDebounce(search, 150);
-  const { data, isLoading, isError, error } = useProducts({
-    search: debounced,
-    category: category ?? undefined,
-  });
+  // The whole catalog is loaded once and searched locally: instant, works
+  // in any word order, ignores accents, and matches categories too.
+  const { data: catalog, isLoading, isError, error } = useCatalog();
   const { data: categories } = useCategories();
   const { lines, add } = useCartStore();
 
   const inCart = useMemo(() => new Map(lines.map((l) => [l.product.id, l.quantity])), [lines]);
-  const products = data?.data ?? [];
+  const products = useMemo(
+    () =>
+      searchProducts(
+        (catalog ?? []).filter((p) => !category || p.category === category),
+        search,
+      ),
+    [catalog, category, search],
+  );
 
   useHotkey('/', (e) => {
     e.preventDefault();
@@ -95,15 +101,32 @@ export default function POSTerminal() {
         </div>
 
         <div className="scroll-thin min-h-0 flex-1 overflow-y-auto pb-6">
-          {isLoading && (
+          {isLoading && !catalog && (
             <div className="grid place-items-center py-24">
               <LoadingSpinner size="lg" />
             </div>
           )}
           {isError && <EmptyState title="Could not load products">{error.message}</EmptyState>}
           {!isLoading && !isError && products.length === 0 && (
-            <EmptyState title="No products match">
-              Try another search, or add products in Stock.
+            <EmptyState
+              title={search ? `Nothing matches "${search.trim()}"` : 'No products here yet'}
+              action={
+                search || category ? (
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setSearch('');
+                      setCategory(null);
+                    }}
+                  >
+                    Clear search
+                  </Button>
+                ) : undefined
+              }
+            >
+              {search
+                ? 'Try fewer letters, another spelling, or the SKU.'
+                : 'Add products in Stock to start selling.'}
             </EmptyState>
           )}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
@@ -113,6 +136,7 @@ export default function POSTerminal() {
                 product={p}
                 inCart={inCart.get(p.id) ?? 0}
                 onAdd={() => addProduct(p.id)}
+                query={search}
               />
             ))}
           </div>
