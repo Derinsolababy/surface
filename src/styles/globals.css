@@ -35,6 +35,16 @@
     @apply min-h-full;
   }
 
+  /* iOS Safari zooms the page when an input under 16px gets focus. Keep form
+     text at 16px on touch screens; desktop keeps the compact sizes. */
+  @media (pointer: coarse) {
+    input,
+    select,
+    textarea {
+      font-size: max(16px, 1em) !important;
+    }
+  }
+
   body {
     /* A faint paper grain so large surfaces do not look flat. */
     background-image: radial-gradient(rgb(var(--ink) / 0.035) 1px, transparent 1px);
@@ -51,6 +61,13 @@
 }
 
 @layer components {
+  /* Full viewport height that excludes Safari's collapsing toolbars.
+     Browsers without dvh fall back to vh. */
+  .min-h-app {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
   /* Tabular figures everywhere money appears. */
   .figures {
     @apply font-mono tabular-nums tracking-tight;

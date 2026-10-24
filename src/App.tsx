@@ -29,7 +29,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="min-h-app flex items-center justify-center">
         <LoadingSpinner size="lg" />
       </div>
     );

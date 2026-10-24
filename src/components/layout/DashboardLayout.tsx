@@ -71,7 +71,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   }, [modes, navigate]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-app flex flex-col">
       <header className="no-print sticky top-0 z-30 border-b border-ink-line bg-paper/90 backdrop-blur">
         <div className="flex h-14 items-center gap-4 px-4 sm:px-6">
           <NavLink
