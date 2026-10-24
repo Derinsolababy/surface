@@ -2,6 +2,7 @@ import { useStoreSettings } from '@/hooks/queries';
 import type { Transaction } from '@/types';
 import { cn, formatDateTime, truncateMiddle } from '@/utils/helpers';
 import { useFormatMoney } from '@/hooks/useFormatMoney';
+import { useReceiptStore } from '@/stores/receiptStore';
 import { METHOD_LABEL } from '@/lib/pos';
 
 /** A printable 80mm receipt for a sale with its items and payments loaded. */
@@ -17,6 +18,8 @@ export default function ReceiptView({
   const payments = (sale.payments ?? []).filter((p) => p.status === 'completed');
   const change = payments.reduce((sum, p) => sum + (p.changeCents ?? 0), 0);
 
+  const receipt = useReceiptStore();
+
   return (
     <div
       className={cn(
@@ -27,13 +30,16 @@ export default function ReceiptView({
       <p className="text-center font-display text-lg font-bold uppercase">
         {store?.name ?? 'StellarPOS'}
       </p>
+      {receipt.header && (
+        <p className="whitespace-pre-line text-center text-xs text-ink-2">{receipt.header}</p>
+      )}
       <p className="text-center text-xs text-ink-3">
         {sale.reference} / {formatDateTime(sale.createdAt)}
       </p>
-      {sale.cashierName && (
+      {receipt.showCashier && sale.cashierName && (
         <p className="text-center text-xs text-ink-3">Served by {sale.cashierName}</p>
       )}
-      {sale.customerName && (
+      {receipt.showCustomer && sale.customerName && (
         <p className="text-center text-xs text-ink-3">Customer: {sale.customerName}</p>
       )}
 
@@ -65,7 +71,7 @@ export default function ReceiptView({
             label={METHOD_LABEL[p.method].toUpperCase()}
             value={money(p.tenderedCents ?? p.amountCents)}
           />
-          {p.stellarTxHash && (
+          {receipt.showTxHash && p.stellarTxHash && (
             <p className="break-all text-[10px] text-ink-3">
               tx {truncateMiddle(p.stellarTxHash, 10, 10)}
             </p>
@@ -76,7 +82,9 @@ export default function ReceiptView({
       {sale.status !== 'completed' && (
         <p className="mt-2 text-center font-semibold uppercase text-signal">{sale.status}</p>
       )}
-      <p className="mt-4 text-center text-xs text-ink-3">Thank you</p>
+      {receipt.footer && (
+        <p className="mt-4 whitespace-pre-line text-center text-xs text-ink-3">{receipt.footer}</p>
+      )}
     </div>
   );
 }
