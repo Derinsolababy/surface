@@ -17,6 +17,7 @@ import {
 } from '@/hooks/queries';
 import { useAuth } from '@/hooks/useAuth';
 import { useThemeStore } from '@/stores/themeStore';
+import ReceiptSettings from './ReceiptSettings';
 import type { Role } from '@/types';
 import { formatAssetAmount, truncateMiddle } from '@/utils/helpers';
 
@@ -301,6 +302,9 @@ export default function Settings() {
       <PageHeader eyebrow="Settings" title="Till configuration" />
       <Section title="Your profile" description="Your name appears on receipts you ring up.">
         <Profile />
+      </Section>
+      <Section title="Receipts" description="Header, footer and what prints. Saved on this till.">
+        <ReceiptSettings />
       </Section>
       <Section
         title="Appearance"
