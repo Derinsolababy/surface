@@ -6,6 +6,13 @@ export interface User {
   email: string;
   role: Role;
   createdAt: string;
+  twoFactorEnabled?: boolean;
+}
+
+/** /auth/login answer when the account has two-factor sign-in on. */
+export interface TwoFactorChallenge {
+  twoFactorRequired: true;
+  challenge: string;
 }
 
 export interface Session {
