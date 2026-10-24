@@ -65,15 +65,13 @@ describe('ReceiptView options', () => {
   });
 
   it('applies header, footer and hidden fields', () => {
-    useReceiptStore
-      .getState()
-      .update({
-        header: '12 Admiralty Way',
-        footer: 'Wifi: kofi-guest',
-        showCashier: false,
-        showCustomer: false,
-        showTxHash: false,
-      });
+    useReceiptStore.getState().update({
+      header: '12 Admiralty Way',
+      footer: 'Wifi: kofi-guest',
+      showCashier: false,
+      showCustomer: false,
+      showTxHash: false,
+    });
     renderWithProviders(<ReceiptView sale={sale} />);
     expect(screen.getByText('12 Admiralty Way')).toBeInTheDocument();
     expect(screen.getByText('Wifi: kofi-guest')).toBeInTheDocument();
