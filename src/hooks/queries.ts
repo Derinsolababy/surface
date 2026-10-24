@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { api } from '@/lib/api';
 import { setCategoryOrder } from '@/lib/pos';
 import type {
+  CatalogProduct,
   Customer,
   CustomerInput,
   DayPoint,
@@ -63,6 +64,13 @@ export const useProducts = (q: ProductQuery = {}) =>
     queryKey: keys.products(q),
     queryFn: () => api.getPage<Paginated<Product>>('/products', { limit: 200, ...q }),
     placeholderData: keepPreviousData,
+  });
+
+/** Every active product in one compact, ETag-cached request (for the register). */
+export const useCatalog = () =>
+  useQuery({
+    queryKey: ['products', 'catalog'],
+    queryFn: () => api.get<CatalogProduct[]>('/products/catalog'),
   });
 
 export const useCategories = () =>

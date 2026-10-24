@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import type { Customer, Product } from '@/types';
+import type { CatalogProduct, Customer } from '@/types';
 import { taxCents } from '@/utils/helpers';
 
 export interface CartLine {
-  product: Product;
+  product: CatalogProduct;
   quantity: number;
 }
 
@@ -11,7 +11,7 @@ interface CartState {
   lines: CartLine[];
   customer: Customer | null;
   discountCents: number;
-  add: (product: Product, quantity?: number) => boolean;
+  add: (product: CatalogProduct, quantity?: number) => boolean;
   setQuantity: (productId: string, quantity: number) => void;
   remove: (productId: string) => void;
   setCustomer: (customer: Customer | null) => void;

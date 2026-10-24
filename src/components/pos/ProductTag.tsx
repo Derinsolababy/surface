@@ -1,5 +1,6 @@
 import { categoryColor } from '@/lib/pos';
-import type { Product } from '@/types';
+import { highlight } from '@/lib/search';
+import type { CatalogProduct } from '@/types';
 import { cn } from '@/utils/helpers';
 import Money from '../ui/Money';
 
@@ -8,10 +9,13 @@ export default function ProductTag({
   product,
   inCart,
   onAdd,
+  query = '',
 }: {
-  product: Product;
+  product: CatalogProduct;
   inCart: number;
   onAdd: () => void;
+  /** Search text to highlight in the name. */
+  query?: string;
 }) {
   const soldOut = product.stock - inCart <= 0;
   return (
@@ -31,7 +35,17 @@ export default function ProductTag({
         style={{ background: categoryColor(product.category) }}
         aria-hidden
       />
-      <span className="line-clamp-2 font-medium leading-snug">{product.name}</span>
+      <span className="line-clamp-2 font-medium leading-snug">
+        {highlight(product.name, query).map((part, i) =>
+          part.match ? (
+            <mark key={i} className="rounded-sm bg-lumen-soft text-lumen-ink">
+              {part.text}
+            </mark>
+          ) : (
+            part.text
+          ),
+        )}
+      </span>
       <span className="mt-auto flex items-end justify-between gap-2 pt-3">
         <Money cents={product.priceCents} className="text-lg font-semibold" />
         <span

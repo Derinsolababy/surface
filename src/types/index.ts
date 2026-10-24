@@ -56,6 +56,12 @@ export interface Product {
   updatedAt: string;
 }
 
+/** The compact shape from GET /products/catalog, all the register needs. */
+export type CatalogProduct = Pick<
+  Product,
+  'id' | 'name' | 'sku' | 'category' | 'priceCents' | 'stock' | 'lowStock'
+>;
+
 export type ProductInput = Pick<Product, 'name' | 'sku' | 'category' | 'priceCents' | 'stock'> &
   Partial<Pick<Product, 'description' | 'lowStockThreshold' | 'active'>>;
 

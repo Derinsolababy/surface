@@ -25,6 +25,7 @@ describe('App', () => {
         body: { success: true, data: [], pagination: { page: 1, limit: 200, total: 0, pages: 1 } },
       },
       'GET /api/v1/products/categories': { body: { success: true, data: [] } },
+      'GET /api/v1/products/catalog': { body: { success: true, data: [] } },
     });
   });
   afterEach(() => {
