@@ -1,5 +1,5 @@
-import { Printer, RotateCcw, Search, XCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Download, Printer, RotateCcw, Search, XCircle } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import ReceiptView from '@/components/pos/ReceiptView';
 import { MethodBadge, StatusBadge } from '@/components/ui/Badge';
@@ -19,6 +19,8 @@ import {
 } from '@/hooks/queries';
 import { useAuth } from '@/hooks/useAuth';
 import { useDebounce } from '@/hooks/useDebounce';
+import { downloadFile } from '@/lib/csv';
+import { fetchAllOrders, ordersToCsv } from '@/lib/exportOrders';
 import type { Transaction, TransactionStatus } from '@/types';
 import { cn, formatDateTime, formatTime } from '@/utils/helpers';
 
@@ -175,12 +177,47 @@ export default function Transactions() {
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<string | null>(null);
   const query = { ...filter, search: useDebounce(search), page };
+  const [exporting, setExporting] = useState<{ done: number; total: number } | null>(null);
+  const abort = useRef<AbortController | null>(null);
+
+  const exportCsv = async () => {
+    abort.current = new AbortController();
+    setExporting({ done: 0, total: 0 });
+    try {
+      // fetchAllOrders walks every page itself.
+      const orders = await fetchAllOrders(
+        query,
+        (done, total) => setExporting({ done, total }),
+        abort.current.signal,
+      );
+      downloadFile(
+        `stellarpos-orders-${new Date().toISOString().slice(0, 10)}.csv`,
+        ordersToCsv(orders),
+      );
+      toast.success(`Exported ${orders.length} sales`);
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') toast.error((err as Error).message);
+    } finally {
+      setExporting(null);
+    }
+  };
   const { data, isLoading } = useTransactions(query);
   const sales = data?.data ?? [];
 
   return (
     <div className="mx-auto max-w-[1300px]">
-      <PageHeader eyebrow="Orders" title="Every sale, on record" />
+      <PageHeader eyebrow="Orders" title="Every sale, on record">
+        {exporting ? (
+          <Button variant="secondary" onClick={() => abort.current?.abort()}>
+            Exporting {exporting.done}
+            {exporting.total ? ` of ${exporting.total}` : ''}, cancel
+          </Button>
+        ) : (
+          <Button variant="secondary" icon={<Download className="h-4 w-4" />} onClick={exportCsv}>
+            Export CSV
+          </Button>
+        )}
+      </PageHeader>
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
         <div>
           <div className="mb-4 flex flex-wrap items-center gap-3">
