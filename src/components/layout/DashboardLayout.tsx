@@ -11,6 +11,15 @@ import { cn, initials } from '@/utils/helpers';
 import Kbd from '../ui/Kbd';
 import BrandMark from './BrandMark';
 
+// Warm a screen's code when the pointer reaches its tab, so the click feels instant.
+const PREFETCH: Record<string, () => Promise<unknown>> = {
+  '/dashboard': () => import('@/pages/dashboard/Dashboard'),
+  '/inventory': () => import('@/pages/inventory/Inventory'),
+  '/transactions': () => import('@/pages/transactions/Transactions'),
+  '/customers': () => import('@/pages/customers/Customers'),
+  '/settings': () => import('@/pages/settings/Settings'),
+};
+
 const MODES: { to: string; label: string; key: string; minRole?: Role }[] = [
   { to: '/pos', label: 'Register', key: '1' },
   { to: '/transactions', label: 'Orders', key: '2' },
@@ -83,6 +92,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <NavLink
                 key={m.to}
                 to={m.to}
+                onPointerEnter={() => void PREFETCH[m.to]?.()}
+                onFocus={() => void PREFETCH[m.to]?.()}
                 className={({ isActive }) =>
                   cn(
                     'group flex shrink-0 items-center gap-2 border-b-2 px-3 text-sm font-medium transition-colors',

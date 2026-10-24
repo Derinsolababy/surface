@@ -54,4 +54,20 @@ describe('App', () => {
     expect(await screen.findByRole('navigation', { name: 'Modes' })).toBeInTheDocument();
     expect(await screen.findByText('Nothing rung up yet')).toBeInTheDocument();
   });
+
+  it('loads back-office screens on demand', async () => {
+    useAuthStore.setState({
+      user: {
+        id: 'u1',
+        name: 'Ada Admin',
+        email: 'a@example.com',
+        role: 'cashier',
+        createdAt: '2026-01-01 00:00:00',
+      },
+      token: 't',
+      isAuthenticated: true,
+    });
+    renderWithProviders(<App />, { route: '/settings' });
+    expect(await screen.findByRole('heading', { name: 'Till configuration' })).toBeInTheDocument();
+  });
 });
