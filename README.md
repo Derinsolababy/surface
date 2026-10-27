@@ -235,3 +235,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Built with ❤️ for the Stellar ecosystem
+
+<!-- fix: issue #190 - [A11Y-017] Notification dismissal not keyboard accessible -->
