@@ -270,10 +270,10 @@ export const useRevenueByDay = (days = 14) =>
     queryFn: () => api.get<DayPoint[]>('/analytics/revenue-by-day', { days }),
   });
 
-export const useHourly = () =>
+export const useHourly = (days = 30) =>
   useQuery({
-    queryKey: [...keys.analytics, 'hourly'],
-    queryFn: () => api.get<HourPoint[]>('/analytics/hourly'),
+    queryKey: [...keys.analytics, 'hourly', days],
+    queryFn: () => api.get<HourPoint[]>('/analytics/hourly', { days }),
   });
 
 export const useTopProducts = (limit = 6, days = 30) =>
