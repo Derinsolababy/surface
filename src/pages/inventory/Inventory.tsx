@@ -88,8 +88,11 @@ export default function Inventory() {
         </label>
       </div>
 
+      {/* max-h + overflow-y lets the browser skip rendering off-screen rows.
+          content-visibility:auto on each <tr> (below) gives CSS-native
+          virtual scrolling without a third-party library (#213). */}
       <div className="overflow-x-auto rounded-xl border border-ink-line bg-paper-card">
-        <table className="w-full min-w-[720px] text-sm">
+        <table className="w-full min-w-[720px] text-sm" style={{ tableLayout: 'fixed' }}>
           <thead className="border-b border-ink-line bg-paper-2/60 text-left">
             <tr className="eyebrow">
               <th className="px-4 py-3 font-medium">Product</th>
@@ -99,9 +102,16 @@ export default function Inventory() {
               <th className="px-4 py-3 font-medium">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-ink-line">
+          <tbody
+            className="divide-y divide-ink-line"
+            style={{ display: 'block', maxHeight: '70vh', overflowY: 'auto' }}
+          >
             {products.map((p) => (
-              <tr key={p.id} className={cn('hover:bg-paper/70', !p.active && 'opacity-55')}>
+              <tr
+                key={p.id}
+                className={cn('hover:bg-paper/70', !p.active && 'opacity-55')}
+                style={{ display: 'table', width: '100%', tableLayout: 'fixed', contentVisibility: 'auto', containIntrinsicSize: '0 53px' }}
+              >
                 <td className="px-4 py-3">
                   <button
                     className="text-left disabled:cursor-default"
