@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Ensure fallback text renders immediately while Google Fonts load (#198).
+   These @font-face rules shadow the Google Fonts stylesheet entries so the
+   font-display value is guaranteed regardless of how the CDN responds. */
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: local('Bricolage Grotesque');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  src: local('Instrument Sans');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: local('IBM Plex Mono');
+  font-display: swap;
+}
+
+/* Stable layout utilities extracted from inline styles (#206).
+   content-visibility and contain-intrinsic-size have no Tailwind built-ins. */
+@layer utilities {
+  .inventory-scroll-body {
+    display: block;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .inventory-row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 53px;
+  }
+}
+
 /* Theme tokens as RGB triplets so Tailwind opacity modifiers work. */
 @layer base {
   :root {
