@@ -92,7 +92,7 @@ export default function Inventory() {
           content-visibility:auto on each <tr> (below) gives CSS-native
           virtual scrolling without a third-party library (#213). */}
       <div className="overflow-x-auto rounded-xl border border-ink-line bg-paper-card">
-        <table className="w-full min-w-[720px] text-sm" style={{ tableLayout: 'fixed' }}>
+        <table className="w-full min-w-[720px] table-fixed text-sm">
           <thead className="border-b border-ink-line bg-paper-2/60 text-left">
             <tr className="eyebrow">
               <th className="px-4 py-3 font-medium">Product</th>
@@ -102,15 +102,11 @@ export default function Inventory() {
               <th className="px-4 py-3 font-medium">Status</th>
             </tr>
           </thead>
-          <tbody
-            className="divide-y divide-ink-line"
-            style={{ display: 'block', maxHeight: '70vh', overflowY: 'auto' }}
-          >
+          <tbody className="inventory-scroll-body divide-y divide-ink-line">
             {products.map((p) => (
               <tr
                 key={p.id}
-                className={cn('hover:bg-paper/70', !p.active && 'opacity-55')}
-                style={{ display: 'table', width: '100%', tableLayout: 'fixed', contentVisibility: 'auto', containIntrinsicSize: '0 53px' }}
+                className={cn('inventory-row hover:bg-paper/70', !p.active && 'opacity-55')}
               >
                 <td className="px-4 py-3">
                   <button

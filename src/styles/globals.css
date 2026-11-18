@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Stable layout utilities extracted from inline styles (#206).
+   content-visibility and contain-intrinsic-size have no Tailwind built-ins. */
+@layer utilities {
+  .inventory-scroll-body {
+    display: block;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .inventory-row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 53px;
+  }
+}
+
 /* Theme tokens as RGB triplets so Tailwind opacity modifiers work. */
 @layer base {
   :root {
