@@ -85,8 +85,8 @@ function ZReport({ summary, label }: { summary: Summary; label: string }) {
   );
 }
 
-function HourStrip() {
-  const { data: utc } = useHourly();
+function HourStrip({ days }: { days: number }) {
+  const { data: utc } = useHourly(days);
   if (!utc) return null;
   // The server buckets by UTC hour; rotate so the strip reads in local time.
   const offset = Math.round(-new Date().getTimezoneOffset() / 60);
@@ -100,7 +100,7 @@ function HourStrip() {
       <div
         className="grid grid-cols-[repeat(24,minmax(0,1fr))] gap-[3px]"
         role="img"
-        aria-label="Sales by hour of day, last 30 days"
+        aria-label={`Sales by hour of day, last ${days} days`}
       >
         {data.map((h) => (
           <div
@@ -240,9 +240,9 @@ export default function Dashboard() {
           <section>
             <div className="mb-3 flex items-baseline justify-between">
               <h2 className="font-display text-xl font-bold">When customers come in</h2>
-              <span className="eyebrow">sales by local hour, 30 days</span>
+              <span className="eyebrow">sales by local hour, {days} days</span>
             </div>
-            <HourStrip />
+            <HourStrip days={days} />
           </section>
 
           <section>
