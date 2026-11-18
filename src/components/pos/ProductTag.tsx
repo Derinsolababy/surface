@@ -37,6 +37,15 @@ export default function ProductTag({
         style={{ background: categoryColor(product.category) }}
         aria-hidden
       />
+      {product.imageUrl && (
+        <img
+          src={product.imageUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="mb-2 h-16 w-full rounded-sm object-cover"
+        />
+      )}
       <span className="line-clamp-2 font-medium leading-snug">
         {highlight(product.name, query).map((part, i) =>
           part.match ? (

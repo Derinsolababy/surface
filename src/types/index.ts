@@ -59,6 +59,7 @@ export interface Product {
   lowStockThreshold: number;
   active: boolean;
   lowStock: boolean;
+  imageUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -66,7 +67,7 @@ export interface Product {
 /** The compact shape from GET /products/catalog, all the register needs. */
 export type CatalogProduct = Pick<
   Product,
-  'id' | 'name' | 'sku' | 'category' | 'priceCents' | 'stock' | 'lowStock'
+  'id' | 'name' | 'sku' | 'category' | 'priceCents' | 'stock' | 'lowStock' | 'imageUrl'
 >;
 
 export type ProductInput = Pick<Product, 'name' | 'sku' | 'category' | 'priceCents' | 'stock'> &
