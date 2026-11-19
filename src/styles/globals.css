@@ -89,6 +89,9 @@
 
   :focus-visible {
     @apply outline-none ring-2 ring-lumen ring-offset-2 ring-offset-paper;
+    /* Use the themed background colour as the ring offset in dark mode so the
+       focus indicator remains visible regardless of colour scheme (#182). */
+    --tw-ring-offset-color: rgb(var(--paper));
   }
 
   ::selection {
