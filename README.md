@@ -255,6 +255,17 @@ src/
   utils/         formatting and parsing
 ```
 
+## Turrets escrow
+
+For high-value transactions StellarPOS can hold funds in a **Stellar Turrets**
+trustless escrow contract until both the customer and merchant co-sign the
+release. Escrow is **off by default** and activates only when a transaction
+exceeds the configurable `VITE_ESCROW_THRESHOLD_XLM` and a Turret endpoint is
+set.
+
+See [docs/turrets-escrow.md](docs/turrets-escrow.md) for the full setup guide,
+the escrow flow in the UI, the security model, and testnet instructions.
+
 ## PWA
 
 StellarPOS is installable as a Progressive Web App. See
