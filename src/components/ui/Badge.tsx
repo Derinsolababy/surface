@@ -19,10 +19,12 @@ export default function Badge({
   tone = 'neutral',
   children,
   className,
+  'aria-label': ariaLabel,
 }: {
   tone?: BadgeTone;
   children: ReactNode;
   className?: string;
+  'aria-label'?: string;
 }) {
   return (
     <span
@@ -31,6 +33,7 @@ export default function Badge({
         tones[tone],
         className,
       )}
+      aria-label={ariaLabel}
     >
       {children}
     </span>
@@ -44,8 +47,20 @@ const statusTone: Record<TransactionStatus, BadgeTone> = {
   refunded: 'signal',
 };
 
+const statusLabel: Record<TransactionStatus, string> = {
+  pending: 'Pending',
+  completed: 'Completed',
+  void: 'Void',
+  refunded: 'Refunded',
+};
+
 export const StatusBadge = ({ status }: { status: TransactionStatus }) => (
-  <Badge tone={statusTone[status]}>{status}</Badge>
+  <Badge
+    tone={statusTone[status]}
+    aria-label={`Transaction status: ${statusLabel[status]}`}
+  >
+    {statusLabel[status]}
+  </Badge>
 );
 
 const methodTone: Record<PaymentMethod, BadgeTone> = {
