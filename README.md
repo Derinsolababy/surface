@@ -82,11 +82,16 @@ a funded testnet account, then pay the QR from any testnet wallet.
 
 ### Configuration
 
+Copy [`.env.example`](.env.example) to `.env.local` and edit the values for
+your environment. Variables prefixed with `VITE_` are bundled into the browser
+build by Vite — do not put secrets in them.
+
 | Variable | Default | Purpose |
 |---|---|---|
-| `VITE_API_BASE_URL` | `/api/v1` | API base path, or an absolute URL if the API is on another origin |
-| `VITE_SOCKET_URL` | same origin | Socket.IO origin |
-| `VITE_DEV_API_TARGET` | `http://localhost:3000` | Where `npm run dev` proxies |
+| `VITE_API_BASE_URL` | `/api/v1` | API base path, or an absolute URL when the API is on a different origin |
+| `VITE_SOCKET_URL` | same origin | Socket.IO server origin; empty = same origin (works with the dev proxy) |
+| `VITE_IDLE_TIMEOUT_MINUTES` | `30` | Minutes without input before an unattended till is signed out; a warning fires 5 minutes before. Set to `0` to disable |
+| `VITE_DEV_API_TARGET` | `http://localhost:3000` | Target `npm run dev` proxies `/api` and `/socket.io` to (dev only) |
 
 ### Docker
 
