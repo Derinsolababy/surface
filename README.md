@@ -168,6 +168,12 @@ StellarPOS is installable as a Progressive Web App. See
 [docs/pwa.md](docs/pwa.md) for installation steps, offline behaviour, and
 platform-specific limitations (iOS, Android, desktop browsers).
 
+## Merchant guide
+
+See [docs/merchant-guide.md](docs/merchant-guide.md) for a full user guide
+covering the dashboard analytics, transaction management (refunds, voids, CSV
+export), inventory and product setup, store settings, and role permissions.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues privately,
