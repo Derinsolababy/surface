@@ -63,22 +63,108 @@ a tablet or phone.
 
 ## Getting started
 
-You need the [backend](https://github.com/StellarPOS-App/backend) running
-(it takes about a minute: `npm install && npm run db:seed && npm run dev`).
+### Prerequisites
+
+| Tool | Minimum version | Notes |
+|---|---|---|
+| **Node.js** | 20 LTS | Check with `node -v`. [nvm](https://github.com/nvm-sh/nvm) or [fnm](https://github.com/Schniz/fnm) are recommended for version management |
+| **npm** | 9 | Bundled with Node 20. Check with `npm -v` |
+| **Git** | any recent | For cloning and branching |
+
+This repository is the **frontend only**. It needs the
+[StellarPOS backend](https://github.com/StellarPOS-App/backend) running
+locally to serve the API and handle real-time events. Set the backend up
+first (takes about a minute), then come back here.
+
+#### 1 — Start the backend
+
+```bash
+git clone https://github.com/StellarPOS-App/backend.git
+cd backend
+npm install
+npm run db:seed   # creates the SQLite database and demo data
+npm run dev       # listens on http://localhost:3000
+```
+
+Leave that terminal open. The backend must stay running while you develop.
+
+#### 2 — Clone and install the frontend
+
+Open a new terminal:
 
 ```bash
 git clone https://github.com/StellarPOS-App/surface.git
 cd surface
 npm install
-npm run dev            # http://localhost:5173
 ```
 
-The dev server proxies `/api` and `/socket.io` to `http://localhost:3000`, so
-there is nothing to configure. Sign in as `admin@stellarpos.dev` with
-password `stellarpos-demo` (created by the backend seed).
+#### 3 — Configure environment variables (optional for local dev)
 
-To try Stellar checkout, set `STELLAR_MERCHANT_PUBLIC_KEY` on the backend to
-a funded testnet account, then pay the QR from any testnet wallet.
+The Vite dev server proxies `/api` and `/socket.io` to `http://localhost:3000`
+automatically, so **no `.env.local` is needed for a default local setup**.
+
+If you need to change any defaults — for example to point at a remote backend
+or adjust the idle timeout — copy the example file and edit it:
+
+```bash
+cp .env.example .env.local
+# then open .env.local in your editor
+```
+
+See the [Configuration](#configuration) section below for a full variable
+reference.
+
+#### 4 — Start the dev server
+
+```bash
+npm run dev       # http://localhost:5173
+```
+
+Open `http://localhost:5173` in your browser. Sign in with the demo account
+created by the backend seed:
+
+| Field | Value |
+|---|---|
+| Email | `admin@stellarpos.dev` |
+| Password | `stellarpos-demo` |
+
+You should land on the POS register. The dashboard, transactions, inventory,
+and settings pages are all accessible from the sidebar.
+
+#### 5 — Verify everything works
+
+```bash
+npm run check     # lint + type-check + tests (what CI runs)
+```
+
+All 35 tests should pass. If any fail, check that your Node version meets the
+minimum (`node -v` → 20+) and that dependencies are installed (`npm install`).
+
+### Trying Stellar QR checkout
+
+The register's QR checkout requires a Stellar account. To test it end to end:
+
+1. Create a funded **testnet** account at [laboratory.stellar.org](https://laboratory.stellar.org) or with the Stellar CLI.
+2. On the **backend**, set `STELLAR_MERCHANT_PUBLIC_KEY` to that account's public key (G…).
+3. Restart the backend.
+4. On the register, add items to the cart and select **Stellar QR** as the payment method.
+5. Scan the QR with any testnet-capable Stellar wallet (e.g. [LOBSTR](https://lobstr.co) on testnet mode).
+
+No real funds are involved on testnet.
+
+### Common first-run problems
+
+**`ERR_CONNECTION_REFUSED` on API calls**
+The backend is not running or is not on port 3000. Start it (`npm run dev` in the backend directory) and confirm it logs `Listening on :3000`.
+
+**Blank page or `404` on hard refresh**
+Only happens in production builds. The dev server handles SPA routing correctly. For production, the included `nginx` config (via Docker) or `netlify.toml` handles it.
+
+**Type errors during `npm run dev`**
+Run `npm install` to ensure all packages are present, then check that your Node version is ≥ 20.
+
+**`VITE_API_BASE_URL` not taking effect**
+Vite only reads `.env.local` at startup. Restart the dev server after changing any `.env.local` value.
 
 ### Configuration
 
@@ -136,6 +222,8 @@ site at this repository, or sync the fork.
 | `npm run build` | Type-check and build to `dist/` |
 | `npm test` | Vitest + Testing Library (35 tests) |
 | `npm run check` | Lint, type-check, test: what CI runs |
+
+> **Tip for new contributors:** `npm run check` is the single command to run before opening a PR. It runs ESLint, TypeScript, and all tests in sequence — the same gates that CI enforces.
 
 ## How it is built
 
