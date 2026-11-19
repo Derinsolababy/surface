@@ -262,7 +262,20 @@ export default function CheckoutModal({ open, initialMethod, onClose }: Checkout
         </div>
       )}
 
-      {sale && done && <ReceiptView sale={sale} />}
+      {sale && done && (
+        <>
+          <div
+            role="status"
+            aria-live="assertive"
+            aria-atomic="true"
+            className="mb-4 flex items-center justify-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-emerald-800 ring-2 ring-emerald-400 dark:bg-emerald-950 dark:text-emerald-200 dark:ring-emerald-600"
+          >
+            <Sparkles className="h-5 w-5 shrink-0 animate-pulse" aria-hidden />
+            <span className="font-semibold">{tr('checkout.paidInFull')}</span>
+          </div>
+          <ReceiptView sale={sale} />
+        </>
+      )}
 
       {sale && !done && (
         <div className="space-y-6">
