@@ -162,6 +162,12 @@ src/
   utils/         formatting and parsing
 ```
 
+## PWA
+
+StellarPOS is installable as a Progressive Web App. See
+[docs/pwa.md](docs/pwa.md) for installation steps, offline behaviour, and
+platform-specific limitations (iOS, Android, desktop browsers).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues privately,
