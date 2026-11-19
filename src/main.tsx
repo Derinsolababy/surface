@@ -36,6 +36,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             classNames: {
               toast: '!bg-paper-card !text-ink !border-ink-line !font-sans !rounded-lg',
               description: '!text-ink-3',
+              closeButton:
+                '!cursor-pointer focus-visible:!outline focus-visible:!outline-2 focus-visible:!outline-offset-2',
             },
           }}
         />
