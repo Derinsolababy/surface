@@ -223,6 +223,8 @@ site at this repository, or sync the fork.
 | `npm test` | Vitest + Testing Library (35 tests) |
 | `npm run check` | Lint, type-check, test: what CI runs |
 
+> **Tip for new contributors:** `npm run check` is the single command to run before opening a PR. It runs ESLint, TypeScript, and all tests in sequence — the same gates that CI enforces.
+
 ## How it is built
 
 - **React 18 + TypeScript + Vite**, styled with **Tailwind** on a small token
