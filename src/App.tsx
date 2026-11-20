@@ -8,6 +8,7 @@ import Login from '@/pages/auth/Login';
 import Register from '@/pages/auth/Register';
 import POSTerminal from '@/pages/pos/POSTerminal';
 import { useAuthStore } from '@/stores/authStore';
+import { useScheduleSettlementReport } from '@/hooks/useSettlementReport';
 
 // The register loads with the app; back-office screens load on first visit.
 // Reports pulls in the charting library (~370 KB), which most till sessions
@@ -26,6 +27,7 @@ const pageFallback = (
 
 function App() {
   const { isAuthenticated, isLoading } = useAuthStore();
+  useScheduleSettlementReport();
 
   if (isLoading) {
     return (
