@@ -5,9 +5,11 @@ import CheckoutModal from '@/components/pos/CheckoutModal';
 import ProductTag from '@/components/pos/ProductTag';
 import { categoryColor } from '@/lib/pos';
 import { searchProducts } from '@/lib/search';
+import BarcodeScanner from '@/components/pos/BarcodeScanner';
 import MobileOrderBar from '@/components/pos/MobileOrderBar';
 import ReceiptCart from '@/components/pos/ReceiptCart';
 import VoiceButton from '@/components/pos/VoiceButton';
+import { barcodeScannerSupported } from '@/hooks/useBarcodeScanner';
 import EmptyState from '@/components/ui/EmptyState';
 import Kbd from '@/components/ui/Kbd';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -23,6 +25,7 @@ export default function POSTerminal() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<string | null>(null);
   const [checkout, setCheckout] = useState<PaymentMethod | null>(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const t = useT();
   // The whole catalog is loaded once and searched locally: instant, works
@@ -79,6 +82,37 @@ export default function POSTerminal() {
             </span>
           </label>
           <VoiceButton catalog={catalog ?? []} onSearch={setSearch} onCharge={setCheckout} />
+          {barcodeScannerSupported() && (
+            <button
+              type="button"
+              onClick={() => setScannerOpen(true)}
+              aria-label={t('pos.barcodeButton')}
+              title={t('pos.barcodeButton')}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-ink-line bg-paper-card text-ink-2 transition-colors hover:border-ink hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lumen"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5"
+                aria-hidden="true"
+              >
+                {/* Barcode scanner icon — corner brackets + lines */}
+                <path d="M3 9V5a2 2 0 0 1 2-2h4" />
+                <path d="M15 3h4a2 2 0 0 1 2 2v4" />
+                <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
+                <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
+                <line x1="7" y1="8" x2="7" y2="16" />
+                <line x1="10" y1="8" x2="10" y2="16" />
+                <line x1="13" y1="8" x2="13" y2="16" />
+                <line x1="16" y1="8" x2="16" y2="12" />
+              </svg>
+            </button>
+          )}
         </div>
 
         <div
@@ -156,6 +190,16 @@ export default function POSTerminal() {
         open={checkout !== null}
         initialMethod={checkout ?? 'cash'}
         onClose={() => setCheckout(null)}
+      />
+
+      <BarcodeScanner
+        open={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        catalog={catalog ?? []}
+        onMatch={(id) => {
+          addProduct(id);
+          setScannerOpen(false);
+        }}
       />
     </div>
   );
