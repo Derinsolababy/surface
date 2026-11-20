@@ -1,6 +1,7 @@
-import { Download, Printer, RotateCcw, Search, XCircle } from 'lucide-react';
+import { Download, FileText, Printer, RotateCcw, Search, XCircle } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import InvoiceView from '@/components/pos/InvoiceView';
 import ReceiptView from '@/components/pos/ReceiptView';
 import { MethodBadge, StatusBadge } from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -102,6 +103,7 @@ function Detail({ id }: { id: string }) {
   const voidSale = useVoidSale();
   const { can } = useAuth();
   const [refunding, setRefunding] = useState(false);
+  const [showInvoice, setShowInvoice] = useState(false);
   if (isLoading || !sale)
     return (
       <div className="grid place-items-center py-24">
@@ -119,6 +121,14 @@ function Detail({ id }: { id: string }) {
           onClick={() => window.print()}
         >
           Print
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<FileText className="h-4 w-4" />}
+          onClick={() => setShowInvoice(true)}
+        >
+          Invoice
         </Button>
         {sale.status === 'pending' && sale.paidCents === 0 && (
           <Button
@@ -167,6 +177,29 @@ function Detail({ id }: { id: string }) {
         </p>
       )}
       {refunding && <RefundDialog sale={sale} onClose={() => setRefunding(false)} />}
+      {showInvoice && (
+        <Modal
+          open
+          onClose={() => setShowInvoice(false)}
+          title="Invoice"
+          size="lg"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setShowInvoice(false)}>
+                Close
+              </Button>
+              <Button
+                icon={<Printer className="h-4 w-4" />}
+                onClick={() => window.print()}
+              >
+                Print / Save PDF
+              </Button>
+            </>
+          }
+        >
+          <InvoiceView sale={sale} />
+        </Modal>
+      )}
     </div>
   );
 }
