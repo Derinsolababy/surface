@@ -19,6 +19,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useThemeStore } from '@/stores/themeStore';
 import { LANGUAGES, useLanguageStore, useT, type Language } from '@/i18n';
 import ReceiptSettings from './ReceiptSettings';
+import SettlementReportSettings from './SettlementReportSettings';
 import TwoFactorSettings from './TwoFactorSettings';
 import WebhookSettings from './WebhookSettings';
 import type { Role } from '@/types';
@@ -397,6 +398,14 @@ export default function Settings() {
       {can('admin') && (
         <Section title="Staff" description="Who can open the till, and what they can do.">
           <Staff />
+        </Section>
+      )}
+      {can('admin') && (
+        <Section
+          title="End-of-day settlement report"
+          description="Auto-email a daily summary of transactions, revenue, tax, discounts and tips at midnight in the merchant timezone."
+        >
+          <SettlementReportSettings />
         </Section>
       )}
     </div>
