@@ -20,6 +20,10 @@ export function renderWithProviders(
 }
 
 let n = 0;
+/** Reset the auto-increment counter used by makeProduct. Called by setup.ts afterEach. */
+export function resetProductCounter() {
+  n = 0;
+}
 export function makeProduct(overrides: Partial<Product> = {}): Product {
   n++;
   return {
