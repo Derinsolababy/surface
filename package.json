@@ -15,6 +15,7 @@
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch",
     "test:e2e": "playwright test",
+    "test:contract": "vitest run src/tests/contracts",
     "type-check": "tsc --noEmit",
     "prepare": "husky install"
   },
@@ -67,7 +68,8 @@
     "jsdom": "^23.0.1",
     "@playwright/test": "^1.40.1",
     "husky": "^8.0.3",
-    "lint-staged": "^15.1.0"
+    "lint-staged": "^15.1.0",
+    "@pact-foundation/pact": "^12.1.0"
   },
   "engines": {
     "node": ">=18.0.0"
