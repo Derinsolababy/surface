@@ -164,4 +164,15 @@
   .no-print {
     display: none !important;
   }
+  /* A4-format invoice (#149) */
+  .invoice-printable,
+  .invoice-printable * {
+    visibility: visible;
+  }
+  .invoice-printable {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 210mm;
+    box-shadow: none !important;
+  }
 }
